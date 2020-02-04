@@ -89,3 +89,10 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 ```
 
+## Enable authorization
+In startup.cs, in the **Configure** method, add the following line
+
+```csharp
+app.UseAuthentication(); // <-- Add this line ABOVE UseAuthorization();
+app.UseAuthorization(); // I should already be here
+```
