@@ -34,7 +34,7 @@ namespace OIDCTest
             .AddCookie()
             .AddOpenIdConnect(options => {
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.Authority = Configuration["OIDC:AuthEndpoint"];
+                options.Authority = Configuration["OIDC:Authority"];
                 options.RequireHttpsMetadata = true;
                 options.ClientId = Configuration["OIDC:ClientId"];
                 options.ClientSecret = Configuration["OIDC:ClientSecret"];
@@ -51,7 +51,10 @@ namespace OIDCTest
             });
             services.AddAuthorization();
 
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorPagesOptions(options => {
+                    options.Conventions.AuthorizePage("/Protected");
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
