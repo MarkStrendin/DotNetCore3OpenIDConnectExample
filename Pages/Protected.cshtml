@@ -5,3 +5,27 @@
 }
 
 <h1>This page should be protected</h1>
+
+<p>You appear to be @User.Identity.Name</p>
+
+<table border=1>
+    <tr>
+        <td>Type</td>
+        <td>Value</td>
+        <td>Value Type</td>
+        <td>Issuer</td>
+        <td>Properties</td>
+    </tr>
+
+@foreach(var c in @User.Claims) {
+    <tr>
+        <td>@c.Type</td>
+        <td>@c.Value</td>
+        <td>@c.ValueType</td>
+        <td>@c.Issuer</td>
+        <td>@c.Properties</td>
+    </tr>
+}
+
+</table>
+
