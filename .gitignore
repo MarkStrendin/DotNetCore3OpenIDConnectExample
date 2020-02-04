@@ -1,5 +1,7 @@
 # Standard CSharp .hgignore / .gitignore
 
+appsettings.Development.json
+
 # Visual Studio 2015 addition
 .vs/
 
