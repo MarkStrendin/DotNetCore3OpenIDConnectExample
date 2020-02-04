@@ -1,9 +1,11 @@
-# Guide
+# How to use OpenIDConnect middleware in an Asp.Net Core 3.1 web app
+
+## Guide
 I'm using https://www.youtube.com/watch?v=1zjz-aWdZHk as a guide. It's for Okta but I'm mostly concerned with  configuring the OpenIDConnect middleware. Any OpenIDConnect service should work.
 
 # Steps
 
-## Set up project
+## Create a project
 1. `mkdir OIDCTest`
 2. `cd OIDCTest`
 3. `dotnet new webapp`
@@ -38,17 +40,51 @@ I'll be using AzureAD.
 
 ## Add configuration for OIDC
 Add to **appsettings.Development.json**, filling in values from the OIDC provider.
-```
+```json
   "OIDC": {
     "ClientId": "",
     "ClientSecret": "",
     "Domain": "",
+    "AuthEndpoint":, ""
     "PostLogoutRedirectUri": "" 
   }
  ```
 
- ## Add nuget package for OpenIdConnect
+## Add nuget package for OpenIdConnect
  `dotnet add package Microsoft.AspNetCore.Authentication.OpenIdConnect --version 3.0.0`
 
+## Add code to Startup.cs
+in **ConfigureServices** method, add the following (above whatever else it's put there):
+```csharp
+services.AddAuthentication(options => {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddOpenIdConnect(options => {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Authority = Configuration["OIDC:AuthEndpoint"];
+                options.RequireHttpsMetadata = true;
+                options.ClientId = Configuration["OIDC:ClientId"];
+                options.ClientSecret = Configuration["OIDC:ClientSecret"];
+                options.ResponseType = OpenIdConnectResponseType.Code;
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.SaveTokens = true;
+                options.TokenValidationParameters = new TokenValidationParameters {
+                    NameClaimType = "name",
+                    RoleClaimType = "groups",
+                    ValidateIssuer = true
+                };
+            });
+```
 
+The above code requires the following using statements
+```csharp
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
+```
 
