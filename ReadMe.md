@@ -57,27 +57,28 @@ Add to **appsettings.Development.json**, filling in values from the OIDC provide
 in **ConfigureServices** method, add the following (above whatever else it's put there):
 ```csharp
 services.AddAuthentication(options => {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddOpenIdConnect(options => {
-                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.Authority = Configuration["OIDC:AuthEndpoint"];
-                options.RequireHttpsMetadata = true;
-                options.ClientId = Configuration["OIDC:ClientId"];
-                options.ClientSecret = Configuration["OIDC:ClientSecret"];
-                options.ResponseType = OpenIdConnectResponseType.Code;
-                options.GetClaimsFromUserInfoEndpoint = true;
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
-                options.SaveTokens = true;
-                options.TokenValidationParameters = new TokenValidationParameters {
-                    NameClaimType = "name",
-                    RoleClaimType = "groups",
-                    ValidateIssuer = true
-                };
-            });
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddOpenIdConnect(options => {
+    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.Authority = Configuration["OIDC:AuthEndpoint"];
+    options.RequireHttpsMetadata = true;
+    options.ClientId = Configuration["OIDC:ClientId"];
+    options.ClientSecret = Configuration["OIDC:ClientSecret"];
+    options.ResponseType = OpenIdConnectResponseType.Code;
+    options.GetClaimsFromUserInfoEndpoint = true;
+    options.Scope.Add("openid");
+    options.Scope.Add("profile");
+    options.SaveTokens = true;
+    options.TokenValidationParameters = new TokenValidationParameters {
+        NameClaimType = "name",
+        RoleClaimType = "groups",
+        ValidateIssuer = true
+    };
+});
+services.AddAuthorization();
 ```
 
 The above code requires the following using statements

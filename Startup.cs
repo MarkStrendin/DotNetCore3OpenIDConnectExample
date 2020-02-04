@@ -44,11 +44,13 @@ namespace OIDCTest
                 options.Scope.Add("profile");
                 options.SaveTokens = true;
                 options.TokenValidationParameters = new TokenValidationParameters {
-                    NameClaimType = "name",
-                    RoleClaimType = "groups",
+                    NameClaimType = "name", // These should be changed to match the json in the id token
+                    RoleClaimType = "groups", // These should be changed to match the json in the id token
                     ValidateIssuer = true
                 };
             });
+            services.AddAuthorization();
+
             services.AddRazorPages();
         }
 
