@@ -53,7 +53,7 @@ Add to **appsettings.Development.json**, filling in values from the OIDC provide
   }
  ```
 
-For AzureAD, the AuthEndpoint should be "https://login.microsoftonline.com/XXXXXXXX" where "XXXXXXXX" is your tenant ID.
+For AzureAD, the Authority should be "https://login.microsoftonline.com/XXXXXXXX" where "XXXXXXXX" is your tenant ID.
 
 ## Add nuget package for OpenIdConnect
  `dotnet add package Microsoft.AspNetCore.Authentication.OpenIdConnect --version 3.0.0`
