@@ -147,9 +147,24 @@ namespace OIDCTest.Pages
 
 Protect the page in **Startup.cs** by adding onto the AddRazorPages() call
 
+See this page for more information: https://docs.microsoft.com/en-us/aspnet/core/security/authorization/razor-pages-authorization?view=aspnetcore-3.1
+
 ```csharp
 services.AddRazorPages()
     .AddRazorPagesOptions(options => {
         options.Conventions.AuthorizePage("/Protected");
+    });
+```
+
+or (Examples from the above link)
+
+```csharp
+services.AddRazorPages()
+    .AddRazorPagesOptions(options =>
+    {
+        options.Conventions.AuthorizePage("/Contact");
+        options.Conventions.AuthorizeFolder("/Private");
+        options.Conventions.AllowAnonymousToPage("/Private/PublicPage");
+        options.Conventions.AllowAnonymousToFolder("/Private/PublicPages");
     });
 ```
